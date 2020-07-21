@@ -5,9 +5,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  // 拿掉嚴格模式，待研究
+  // <React.StrictMode>
+  //   <App />
+  // </React.StrictMode>
+  <App />,
   document.getElementById('root')
 );
 
