@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 // react-bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
+// import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import Select from 'react-select';
 // bookData
 import { bookData } from '../book-data';
+// css
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
+
 
 const bookCategoryItems = [
   { text: "資料庫", value: "database" },
@@ -14,6 +20,13 @@ const bookCategoryItems = [
   { text: "應用系統整合", value: "system" },
   { text: "語言", value: "language" }
 ];
+
+
+const paginationOption = {
+  custom: true,
+  totalSize: bookData.length
+};
+
 class BookSystem extends Component {
   constructor(props) {
     super(props);
@@ -22,9 +35,33 @@ class BookSystem extends Component {
       maxBookId: Math.max(...bookData.map(book => book.BookId)),
       bookName: '',
       bookAuthor: '',
-      bookCategory: bookCategoryItems[0]
+      bookCategory: bookCategoryItems[0],
+      columns: [
+        {
+          dataField: "BookId",
+          text: "BookId",
+          sort: true
+        },
+        {
+          dataField: "BookName",
+          text: "BookName",
+          sort: true
+        },
+        {
+          dataField: "BookAuthor",
+          text: "BookAuthor"
+        },
+        // {
+        //   dataField: "follow",
+        //   text: "Follow",
+        //   formatter: this.linkFollow,
+        //   sort: true
+        // }
+      ],
     }
+
   }
+
 
   addBook = e => {
     e.preventDefault();
@@ -83,13 +120,7 @@ class BookSystem extends Component {
           </Button>
         </Form>
 
-        <BootstrapTable data={ this.state.booksData } pagination bordered={ false }>
-          <TableHeaderColumn dataField='BookId' isKey width={'10%'}>書籍編號</TableHeaderColumn>
-          <TableHeaderColumn dataField='BookName' width={'30%'}>書籍名稱</TableHeaderColumn>
-          <TableHeaderColumn dataField='BookCategory' width={'20%'}>書籍種類</TableHeaderColumn>
-          <TableHeaderColumn dataField='BookAuthor' width={'20%'}>書籍作者</TableHeaderColumn>
-          <TableHeaderColumn dataField='BookBoughtDate' width={'20%'}>購書日期</TableHeaderColumn>
-        </BootstrapTable>
+        <BootstrapTable keyField='BookId' data={ this.state.booksData } columns={ this.state.columns } pagination={ paginationFactory() }/>
 
       </div>
     );
