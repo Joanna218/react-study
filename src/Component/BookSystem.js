@@ -15,24 +15,50 @@ const bookCategoryItems = [
   { label: "語言", value: "language" }
 ];
 class BookSystem extends Component {
-  bookCategory = React.createRef();
-  bookName = React.createRef();
-  bookAuthor = React.createRef();
-
   constructor(props) {
     super(props);
     this.state = {
-      booksData: bookData
+      booksData: bookData,
+      maxBookId: Math.max(...bookData.map(book => book.BookId)),
+      bookName: '',
+      bookAuthor: '',
+      bookCategory: bookCategoryItems[0]
     }
   }
 
   addBook = e => {
     e.preventDefault();
-    const value = this.bookName.current.value;
-    const value2 = this.bookAuthor.current.value;
-    console.log(value);
-    console.log(value2);
-    console.log(this.bookCategory.current.value);
+    this.state.booksData.push({
+      "BookId": this.state.maxBookId + 1,
+      "BookCategory": this.state.bookCategory.label,
+      "BookName": this.state.bookName,
+      "BookAuthor": this.state.bookAuthor,
+      "BookBoughtDate":"1990-06-18",
+      "BookPublisher":"創創公司"
+    });
+    this.setState({
+      booksData: this.state.booksData,
+      maxBookId: this.state.maxBookId + 1,
+      bookName: '',
+      bookAuthor: '',
+      bookCategory: bookCategoryItems[0]
+    });
+
+  }
+
+  bookCategoryChange = e => {
+    this.setState({
+      bookCategory: e
+    })
+  }
+
+  getInputChange = e => {
+    const target = e.target;
+    const name = target.name;
+
+    this.setState({
+      [name]: target.value
+    });
   }
 
   render() {
@@ -42,15 +68,15 @@ class BookSystem extends Component {
           <Form.Group controlId="formBasicEmail">
             <Form.Label>書籍類別</Form.Label>
             <Select options={bookCategoryItems}
-              defaultValue={bookCategoryItems[0]} isSearchable={false} ref={this.bookCategory} />
+              defaultValue={this.state.bookCategory} isSearchable={false} onChange={this.bookCategoryChange}/>
           </Form.Group>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>書籍名稱</Form.Label>
-            <Form.Control type="text" placeholder="書籍名稱..." ref={this.bookName} />
+            <Form.Control type="text" placeholder="書籍名稱..." name="bookName" value={this.state.bookName} onChange={this.getInputChange}/>
           </Form.Group>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>書籍作者</Form.Label>
-            <Form.Control type="text" placeholder="書籍作者..." ref={this.bookAuthor}/>
+            <Form.Control type="text" placeholder="書籍作者..." name="bookAuthor" value={this.state.bookAuthor} onChange={this.getInputChange}/>
           </Form.Group>
           <Button variant="primary" type="submit">
             新增
