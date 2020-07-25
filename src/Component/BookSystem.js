@@ -9,6 +9,7 @@ import { bookData } from '../book-data';
 // css
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
+import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -20,23 +21,7 @@ const bookCategoryItems = [
   { text: "語言", value: "language" }
 ];
 
-const columns = [
-  {
-    dataField: "BookId",
-    text: "BookId",
-    sort: true
-  },
-  {
-    dataField: "BookName",
-    text: "BookName",
-    sort: true
-  },
-  {
-    dataField: "BookAuthor",
-    text: "BookAuthor",
-    sort: true
-  }
-]
+
 
 const defaultSorted = [{
   dataField: 'BookId',
@@ -95,8 +80,59 @@ class BookSystem extends Component {
     }
   }
 
+  // handleDelete = (rowId) => {
+  //   console.log(rowId);
+  // };
 
   render() {
+    const columns = [
+      {
+        dataField: "BookId",
+        text: "BookId",
+        sort: true
+      },
+      {
+        dataField: "BookName",
+        text: "BookName",
+        sort: true
+      },
+      {
+        dataField: "BookAuthor",
+        text: "BookAuthor",
+        sort: true
+      },
+      {
+        dataField: "deleteBookId",
+        text: "actions",
+        formatter: (cellContent, row) => {
+          return (
+            <>
+              {/* <button
+                className="btn btn-danger btn-xs"
+                onClick={() => handleDelete(row.id)}>
+                編輯
+              </button> */}
+              <button
+                className="btn btn-danger btn-xs"
+                onClick={() => handleDelete(row.BookId)} // 必須寫再一起 按了才註冊
+                // onClick={ this.handleDelete(row.BookId)} // render就註冊
+              >
+                刪除
+              </button>
+            </>
+          );
+        },
+      },
+    ]
+
+    const handleDelete = (bookId) => {
+      const delBookIdIdx = this.state.booksData.findIndex(item => item.BookId == bookId);
+      this.state.booksData.splice(delBookIdIdx, 1);
+      this.setState({
+        booksData: this.state.booksData
+      });
+    };
+
     return (
       <div id="bookForm">
         <Form onSubmit={this.addBook}>
