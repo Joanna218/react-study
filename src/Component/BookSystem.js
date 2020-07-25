@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 // react-bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-// import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
-import Select from 'react-select';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 // bookData
 import { bookData } from '../book-data';
 // css
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const bookCategoryItems = [
@@ -21,11 +20,28 @@ const bookCategoryItems = [
   { text: "語言", value: "language" }
 ];
 
+const columns = [
+  {
+    dataField: "BookId",
+    text: "BookId",
+    sort: true
+  },
+  {
+    dataField: "BookName",
+    text: "BookName",
+    sort: true
+  },
+  {
+    dataField: "BookAuthor",
+    text: "BookAuthor",
+    sort: true
+  }
+]
 
-const paginationOption = {
-  custom: true,
-  totalSize: bookData.length
-};
+const defaultSorted = [{
+  dataField: 'BookId',
+  order: 'asc' // desc
+}];
 
 class BookSystem extends Component {
   constructor(props) {
@@ -36,28 +52,6 @@ class BookSystem extends Component {
       bookName: '',
       bookAuthor: '',
       bookCategory: bookCategoryItems[0],
-      columns: [
-        {
-          dataField: "BookId",
-          text: "BookId",
-          sort: true
-        },
-        {
-          dataField: "BookName",
-          text: "BookName",
-          sort: true
-        },
-        {
-          dataField: "BookAuthor",
-          text: "BookAuthor"
-        },
-        // {
-        //   dataField: "follow",
-        //   text: "Follow",
-        //   formatter: this.linkFollow,
-        //   sort: true
-        // }
-      ],
     }
 
   }
@@ -120,7 +114,10 @@ class BookSystem extends Component {
           </Button>
         </Form>
 
-        <BootstrapTable keyField='BookId' data={ this.state.booksData } columns={ this.state.columns } pagination={ paginationFactory() }/>
+        <BootstrapTable bootstrap4 keyField='BookId' data={this.state.booksData}
+          columns={columns}
+          pagination={paginationFactory()}
+          defaultSorted={defaultSorted} />
 
       </div>
     );
