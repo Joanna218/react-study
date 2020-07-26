@@ -10,18 +10,17 @@ import { bookData } from '../book-data';
 // css
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
 
 const bookCategoryItems = [
-  { text: "資料庫", value: "database" },
-  { text: "網際網路", value: "internet" },
-  { text: "家庭保健", value: "home" },
-  { text: "應用系統整合", value: "system" },
-  { text: "語言", value: "language" }
+  { label: "資料庫", value: "database" },
+  { label: "網際網路", value: "internet" },
+  { label: "家庭保健", value: "home" },
+  { label: "應用系統整合", value: "system" },
+  { label: "語言", value: "language" }
 ];
 
 const defaultSorted = [{
@@ -47,7 +46,7 @@ class BookSystem extends Component {
     e.preventDefault();
     this.state.booksData.push({
       "BookId": this.state.maxBookId + 1,
-      "BookCategory": this.state.bookCategory,
+      "BookCategory": this.state.bookCategory.label,
       "BookName": this.state.bookName,
       "BookAuthor": this.state.bookAuthor,
       "BookBoughtDate":"1990-06-18",
@@ -67,14 +66,14 @@ class BookSystem extends Component {
   getBookChangeData = e => {
     const name = e.target.name;
     const value = e.target.value;
-    debugger;
     this.setState({
       [name]: value
     });
   }
 
-  getDropDownChangeData = e => {
-
+  getDropDownChangeData = (bookCategory) => {
+    this.setState({ bookCategory });
+    console.log(`Option selected:`, bookCategory);
   }
 
   // handleDelete = (rowId) => {
@@ -83,21 +82,10 @@ class BookSystem extends Component {
 
   render() {
     const columns = [
-      {
-        dataField: "BookId",
-        text: "BookId",
-        sort: true
-      },
-      {
-        dataField: "BookName",
-        text: "BookName",
-        sort: true
-      },
-      {
-        dataField: "BookAuthor",
-        text: "BookAuthor",
-        sort: true
-      },
+      { dataField: "BookId", text: "BookId", sort: true },
+      { dataField: "BookCategory", text: "BookCategory", sort: true },
+      { dataField: "BookName", text: "BookName", sort: true },
+      { dataField: "BookAuthor", text: "BookAuthor", sort: true },
       {
         dataField: "deleteBookId",
         text: "actions",
@@ -135,18 +123,18 @@ class BookSystem extends Component {
         <Form onSubmit={this.addBook}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>書籍類別</Form.Label>
-            <Form.Control name="bookCategory" as="select" ref={this.selectRef} value={this.state.bookCategory.value} onChange={this.getDropDownChangeData}>
+            {/* <Form.Control name="bookCategory" as="select" ref={this.selectRef} value={this.state.bookCategory.value} onChange={this.getDropDownChangeData}>
               {bookCategoryItems.map((e, key) => {
                 return <option key={key} value={e.value}>{e.text}</option>;
               })}
-            </Form.Control>
-            {/* <Select options={bookCategory} onChange={this.getDropDownChangeData}/> */}
+            </Form.Control> */}
+            <Select name="bookCategory"
+              options={bookCategoryItems}
+              defaultValue={this.state.bookCategory}
+              onChange={this.getDropDownChangeData}
+              isSearchable={false}
+            />
           </Form.Group>
-          {/* <select name="bookCategory" id="formBasicEmail" class="form-control" value={this.state.bookCategory.value} onChange={this.getDropDownChangeData}>
-            <option value="database">資料庫</option><option value="internet">網際網路</option>
-            <option value="home">家庭保健</option><option value="system">應用系統整合</option>
-            <option value="language">語言</option>
-          </select> */}
           <Form.Group controlId="formBasicEmail">
             <Form.Label>書籍名稱</Form.Label>
             <Form.Control type="text" placeholder="書籍名稱..." name="bookName" value={this.state.bookName} onChange={this.getBookChangeData}/>
