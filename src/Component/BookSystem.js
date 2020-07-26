@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import Select from 'react-select'
 // bookData
 import { bookData } from '../book-data';
 // css
@@ -13,6 +14,8 @@ import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 
+
+
 const bookCategoryItems = [
   { text: "資料庫", value: "database" },
   { text: "網際網路", value: "internet" },
@@ -20,8 +23,6 @@ const bookCategoryItems = [
   { text: "應用系統整合", value: "system" },
   { text: "語言", value: "language" }
 ];
-
-
 
 const defaultSorted = [{
   dataField: 'BookId',
@@ -38,9 +39,9 @@ class BookSystem extends Component {
       bookAuthor: '',
       bookCategory: bookCategoryItems[0],
     }
-
   }
 
+  selectRef = React.createRef();
 
   addBook = e => {
     e.preventDefault();
@@ -66,18 +67,14 @@ class BookSystem extends Component {
   getBookChangeData = e => {
     const name = e.target.name;
     const value = e.target.value;
+    debugger;
     this.setState({
       [name]: value
     });
   }
 
   getDropDownChangeData = e => {
-    const value = e.target.value;
-    const data = bookCategoryItems.find(item => item.value == value);
-    const a = {
-      text: data.text,
-      value: data.value
-    }
+
   }
 
   // handleDelete = (rowId) => {
@@ -136,7 +133,20 @@ class BookSystem extends Component {
     return (
       <div id="bookForm">
         <Form onSubmit={this.addBook}>
-
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>書籍類別</Form.Label>
+            <Form.Control name="bookCategory" as="select" ref={this.selectRef} value={this.state.bookCategory.value} onChange={this.getDropDownChangeData}>
+              {bookCategoryItems.map((e, key) => {
+                return <option key={key} value={e.value}>{e.text}</option>;
+              })}
+            </Form.Control>
+            {/* <Select options={bookCategory} onChange={this.getDropDownChangeData}/> */}
+          </Form.Group>
+          {/* <select name="bookCategory" id="formBasicEmail" class="form-control" value={this.state.bookCategory.value} onChange={this.getDropDownChangeData}>
+            <option value="database">資料庫</option><option value="internet">網際網路</option>
+            <option value="home">家庭保健</option><option value="system">應用系統整合</option>
+            <option value="language">語言</option>
+          </select> */}
           <Form.Group controlId="formBasicEmail">
             <Form.Label>書籍名稱</Form.Label>
             <Form.Control type="text" placeholder="書籍名稱..." name="bookName" value={this.state.bookName} onChange={this.getBookChangeData}/>
@@ -161,12 +171,3 @@ class BookSystem extends Component {
 }
 
 export default BookSystem;
-
-// <Form.Group controlId="formBasicEmail">
-// <Form.Label>書籍類別</Form.Label>
-// <Form.Control name="bookCategory" as="select" value={this.state.bookCategory.value} onChange={this.getDropDownChangeData}>
-//   {bookCategoryItems.map((e, key) => {
-//     return <option key={key} value={e.value}>{e.text}</option>;
-//   })}
-// </Form.Control>
-// </Form.Group>
