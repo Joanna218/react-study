@@ -128,7 +128,7 @@ class BookSystem extends Component {
                         <Select
                             name="bookCategory"
                             options={bookCategoryItems}
-                            defaultValue={this.state.bookCategory}
+                            value={this.state.bookCategory}
                             onChange={this.getDropDownChangeData}
                             isSearchable={false}
                         />
