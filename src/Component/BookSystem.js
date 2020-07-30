@@ -6,13 +6,15 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import Select from 'react-select';
 import Modal from 'react-bootstrap/Modal'
+import Image from 'react-bootstrap/Image'
 // bookData
 import { bookData } from '../book-data';
 // css
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-
+// images
+// import database from '../images/database.jpg';
 const bookCategoryItems = [
   { label: '資料庫', value: 'database' },
   { label: '網際網路', value: 'internet' },
@@ -124,6 +126,9 @@ class BookSystem extends Component {
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={this.addBook}>
+              <Form.Group controlId="formBasicEmail">
+                <Image src={require('../images/'+this.state.bookCategory.value+'.jpg')} width="465" height="250" rounded/>
+              </Form.Group>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>書籍類別</Form.Label>
                 <Select
