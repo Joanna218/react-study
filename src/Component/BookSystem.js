@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import Select from 'react-select';
+import Modal from 'react-bootstrap/Modal'
 // bookData
 import { bookData } from '../book-data';
 // css
@@ -38,8 +39,6 @@ class BookSystem extends Component {
       bookCategory: bookCategoryItems[0]
     };
   }
-
-  selectRef = React.createRef();
 
   addBook = e => {
     e.preventDefault();
@@ -81,6 +80,10 @@ class BookSystem extends Component {
       });
   };
 
+  handleEdit = (bookId) => {
+    console.log(bookId);
+  }
+
   render() {
     const columns = [
       { dataField: 'BookId', text: 'BookId', sort: true },
@@ -93,11 +96,11 @@ class BookSystem extends Component {
         formatter: (cellContent, row) => {
           return (
             <>
-              {/* <button
+              <button
                 className="btn btn-danger btn-xs"
-                onClick={() => handleDelete(row.id)}>
+                onClick={() =>this.handleEdit(row.BookId)}>
                 編輯
-              </button> */}
+              </button>
               <button
                 className="btn btn-danger btn-xs"
                 onClick={() => this.handleDelete(row.BookId)}>
@@ -110,46 +113,60 @@ class BookSystem extends Component {
     ];
     return (
       <div id="bookForm">
-        <Form onSubmit={this.addBook}>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>書籍類別</Form.Label>
-            {/* <Form.Control name="bookCategory" as="select" ref={this.selectRef} value={this.state.bookCategory.value} onChange={this.getDropDownChangeData}>
-              {bookCategoryItems.map((e, key) => {
-                return <option key={key} value={e.value}>{e.text}</option>;
-              })}
-            </Form.Control> */}
-            <Select
-              name="bookCategory"
-              options={bookCategoryItems}
-              value={this.state.bookCategory}
-              onChange={this.getDropDownChangeData}
-              isSearchable={false}
-            />
-          </Form.Group>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>書籍名稱</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="書籍名稱..."
-              name="bookName"
-              value={this.state.bookName}
-              onChange={this.getBookChangeData}
-            />
-          </Form.Group>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>書籍作者</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="書籍作者..."
-              name="bookAuthor"
-              value={this.state.bookAuthor}
-              onChange={this.getBookChangeData}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            新增
-          </Button>
-        </Form>
+      <Modal
+          show={true}
+          // onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+      >
+          <Modal.Header closeButton>
+            <Modal.Title>新增書籍</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={this.addBook}>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>書籍類別</Form.Label>
+                <Select
+                  name="bookCategory"
+                  options={bookCategoryItems}
+                  value={this.state.bookCategory}
+                  onChange={this.getDropDownChangeData}
+                  isSearchable={false}
+                />
+              </Form.Group>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>書籍名稱</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="書籍名稱..."
+                  name="bookName"
+                  value={this.state.bookName}
+                  onChange={this.getBookChangeData}
+                />
+              </Form.Group>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>書籍作者</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="書籍作者..."
+                  name="bookAuthor"
+                  value={this.state.bookAuthor}
+                  onChange={this.getBookChangeData}
+                />
+              </Form.Group>
+              <Button variant="primary" type="submit">
+                新增
+              </Button>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary">
+              取消
+            </Button>
+            <Button variant="primary">新增</Button>
+        </Modal.Footer>
+
+        </Modal>
 
         <BootstrapTable
           bootstrap4
