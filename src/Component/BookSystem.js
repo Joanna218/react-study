@@ -5,8 +5,8 @@ import Button from 'react-bootstrap/Button';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import Select from 'react-select';
-import Modal from 'react-bootstrap/Modal'
-import Image from 'react-bootstrap/Image'
+import Modal from 'react-bootstrap/Modal';
+import Image from 'react-bootstrap/Image';
 // bookData
 import { bookData } from '../book-data';
 // css
@@ -38,7 +38,8 @@ class BookSystem extends Component {
       maxBookId: Math.max(...bookData.map(book => book.BookId)),
       bookName: '',
       bookAuthor: '',
-      bookCategory: bookCategoryItems[0]
+      bookCategory: bookCategoryItems[0],
+      show: false,
     };
   }
 
@@ -86,6 +87,12 @@ class BookSystem extends Component {
     console.log(bookId);
   }
 
+  handleToggleWnd = () => {
+    this.setState({
+      show: !this.state.show
+    });
+  }
+
   render() {
     const columns = [
       { dataField: 'BookId', text: 'BookId', sort: true },
@@ -113,15 +120,19 @@ class BookSystem extends Component {
         }
       }
     ];
+
     return (
       <div id="bookForm">
+      <Button variant="primary" onClick={() => this.handleToggleWnd()}>
+        Launch static backdrop modal
+      </Button>
       <Modal
-          show={true}
-          // onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
+        show={this.state.show}
+        onHide={this.state.show}
+        backdrop="static"
+        keyboard={false}
       >
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>新增書籍</Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -165,7 +176,7 @@ class BookSystem extends Component {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary">
+            <Button variant="secondary" onClick={() => this.handleToggleWnd()}>
               取消
             </Button>
             <Button variant="primary">新增</Button>
