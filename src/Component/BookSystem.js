@@ -73,9 +73,13 @@ class BookSystem extends Component {
     console.log(`Option selected:`, bookCategory);
   };
 
-  // handleDelete = (rowId) => {
-  //   console.log(rowId);
-  // };
+  handleDelete = (bookId) => {
+    const delBookIdIdx = this.state.booksData.findIndex(item => item.BookId === bookId);
+      this.state.booksData.splice(delBookIdIdx, 1);
+      this.setState({
+        booksData: this.state.booksData
+      });
+  };
 
   render() {
     const columns = [
@@ -96,9 +100,7 @@ class BookSystem extends Component {
               </button> */}
               <button
                 className="btn btn-danger btn-xs"
-                onClick={() => handleDelete(row.BookId)} // 必須寫再一起 按了才註冊
-                // onClick={ this.handleDelete(row.BookId)} // render就註冊
-              >
+                onClick={() => this.handleDelete(row.BookId)}>
                 刪除
               </button>
             </>
@@ -106,15 +108,6 @@ class BookSystem extends Component {
         }
       }
     ];
-
-    const handleDelete = bookId => {
-      const delBookIdIdx = this.state.booksData.findIndex(item => item.BookId === bookId);
-      this.state.booksData.splice(delBookIdIdx, 1);
-      this.setState({
-        booksData: this.state.booksData
-      });
-    };
-
     return (
       <div id="bookForm">
         <Form onSubmit={this.addBook}>
